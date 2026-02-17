@@ -218,139 +218,139 @@ This project demonstrates how real search engines work internally.
 •	Add multiple keyword search
 •	Add graphical interface
 class ListNode:
-    def __init__(self, doc_id):
-        self.doc_id = doc_id
-        self.next = None
+def __init__(self, doc_id):
+self.doc_id = doc_id
+self.next = None
 class LinkedList:
-    def __init__(self):
-        self.head = None
-    def insert(self, doc_id):
-        temp = self.head
-        while temp is not None:
-            if temp.doc_id == doc_id:
-                return
-            temp = temp.next
-        new_node = ListNode(doc_id)
-        new_node.next = self.head
-        self.head = new_node
-    def get_all_docs(self):
-        docs = []
-        temp = self.head
-        while temp is not None:
-            docs.append(temp.doc_id)
-            temp = temp.next
-        return docs
+def __init__(self):
+self.head = None
+def insert(self, doc_id):
+temp = self.head
+while temp is not None:
+if temp.doc_id == doc_id:
+return
+temp = temp.next
+new_node = ListNode(doc_id)
+new_node.next = self.head
+self.head = new_node
+def get_all_docs(self):
+docs = []
+temp = self.head
+while temp is not None:
+docs.append(temp.doc_id)
+temp = temp.next
+return docs
 class BSTNode:
-    def __init__(self, word):
-        self.word = word
-        self.left = None
-        self.right = None
+def __init__(self, word):
+self.word = word
+self.left = None
+self.right = None
 class BST:
-    def __init__(self):
-        self.root = None
-    def insert_word(self, word):
-        self.root = self.insert(self.root, word)
-    def insert(self, node, word):
-        if node is None:
-            return BSTNode(word)
-        if word < node.word:
-            node.left = self.insert(node.left, word)
-        elif word > node.word:
-            node.right = self.insert(node.right, word)
-        return node
+def __init__(self):
+self.root = None
+def insert_word(self, word):
+self.root = self.insert(self.root, word)
+def insert(self, node, word):
+if node is None:
+return BSTNode(word)
+if word < node.word:
+node.left = self.insert(node.left, word)
+elif word > node.word:
+node.right = self.insert(node.right, word)
+return node
 class MaxHeap:
-    def __init__(self):
-        self.heap = []
-    def insert(self, doc_id, score):
-        self.heap.append([doc_id, score])
-        self.heapify_up(len(self.heap) - 1)
-    def heapify_up(self, index):
-        while index > 0:
-            parent = (index - 1) // 2
-            if self.heap[index][1] > self.heap[parent][1]:
-                temp = self.heap[index]
-                self.heap[index] = self.heap[parent]
-                self.heap[parent] = temp
-                index = parent
-            else:
-                break
-    def heapify_down(self, index):
-        size = len(self.heap)
-        while True:
-            left = 2 * index + 1
-            right = 2 * index + 2
-            largest = index
-            if left < size and self.heap[left][1] > self.heap[largest][1]:
-                largest = left
-            if right < size and self.heap[right][1] > self.heap[largest][1]:
-                largest = right
-            if largest != index:
-                temp = self.heap[index]
-                self.heap[index] = self.heap[largest]
-                self.heap[largest] = temp
-                index = largest
-            else:
-                break
-    def extract_max(self):
-        if len(self.heap) == 0:
-            return None
-        if len(self.heap) == 1:
-            return self.heap.pop()
-        root = self.heap[0]
-        self.heap[0] = self.heap.pop()
-        self.heapify_down(0)
-        return root
+def __init__(self):
+self.heap = []
+def insert(self, doc_id, score):
+self.heap.append([doc_id, score])
+self.heapify_up(len(self.heap) - 1)
+def heapify_up(self, index):
+while index > 0:
+parent = (index - 1) // 2
+if self.heap[index][1] > self.heap[parent][1]:
+temp = self.heap[index]
+self.heap[index] = self.heap[parent]
+self.heap[parent] = temp
+index = parent
+else:
+break
+def heapify_down(self, index):
+size = len(self.heap)
+while True:
+left = 2 * index + 1
+right = 2 * index + 2
+largest = index
+if left < size and self.heap[left][1] > self.heap[largest][1]:
+largest = left
+if right < size and self.heap[right][1] > self.heap[largest][1]:
+largest = right
+if largest != index:
+temp = self.heap[index]
+self.heap[index] = self.heap[largest]
+self.heap[largest] = temp
+index = largest
+else:
+break
+def extract_max(self):
+if len(self.heap) == 0:
+return None
+if len(self.heap) == 1:
+return self.heap.pop()
+root = self.heap[0]
+self.heap[0] = self.heap.pop()
+self.heapify_down(0)
+return root
 class SearchEngine:
-    def __init__(self):
-        self.index = {}
-        self.documents = {}
-        self.tree = BST()
-    def add_document(self, doc_id, text):
-        self.documents[doc_id] = text
-        words = text.lower().split()
-        for word in words:
-            if word not in self.index:
-                self.index[word] = LinkedList()
-                self.tree.insert_word(word)
-            self.index[word].insert(doc_id)
-    def search(self, keyword):
-        keyword = keyword.lower()
-        if keyword not in self.index:
-            print("\nNo documents found.")
-            return
-        doc_list = self.index[keyword].get_all_docs()
-        heap = MaxHeap()
-        for doc_id in doc_list:
-            text = self.documents[doc_id]
-            words = text.lower().split()
-            score = 0
-            for w in words:
-                if w == keyword:
-                    score = score + 1
-            heap.insert(doc_id, score)
-        print("\nRanked Search Results:")
-        while True:
-            result = heap.extract_max()
-            if result is None:
-                break
-            print("Document ID:", result[0], "| Relevance Score:", result[1])
+def __init__(self):
+self.index = {}
+self.documents = {}
+self.tree = BST()
+def add_document(self, doc_id, text):
+self.documents[doc_id] = text
+words = text.lower().split()
+for word in words:
+if word not in self.index:
+self.index[word] = LinkedList()
+self.tree.insert_word(word)
+self.index[word].insert(doc_id)
+def search(self, keyword):
+keyword = keyword.lower()
+if keyword not in self.index:
+print("\nNo documents found.")
+return
+doc_list = self.index[keyword].get_all_docs()
+heap = MaxHeap()
+for doc_id in doc_list:
+text = self.documents[doc_id]
+words = text.lower().split()
+score = 0
+for w in words:
+if w == keyword:
+score = score + 1
+heap.insert(doc_id, score)
+print("\nRanked Search Results:")
+while True:
+result = heap.extract_max()
+if result is None:
+break
+print("Document ID:", result[0], "| Relevance Score:", result[1])
 engine = SearchEngine()
 engine.add_document(1, "Electric field theory and applications")
 engine.add_document(2, "Electric circuits and electric machines")
 engine.add_document(3, "Field theory in electromagnetic systems")
 engine.add_document(4, "Electric power systems and electric control")
 while True:
-    print("\n========= MINI SEARCH ENGINE =========")
-    print("1. Search Keyword")
-    print("2. Exit")
-    choice = input("Enter choice: ")
-    if choice == "1":
-        keyword = input("Enter keyword: ")
-        engine.search(keyword)
-    elif choice == "2":
-        print("Exiting program.")
-        break
-    else:
-        print("Invalid choice.")
+print("\n========= MINI SEARCH ENGINE =========")
+print("1. Search Keyword")
+print("2. Exit")
+choice = input("Enter choice: ")
+if choice == "1":
+keyword = input("Enter keyword: ")
+engine.search(keyword)
+elif choice == "2":
+print("Exiting program.")
+break
+else:
+print("Invalid choice.")
 •	Use real text files
 •	Improve ranking algorithm
